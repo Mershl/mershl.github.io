@@ -63,8 +63,8 @@ Perform flatpak update and refresh Gnome Software afterwards.
 
 Fedora does not come with TLP pre-installed. Fedora claims that the onboard power-tools make TLP obsolete for most use cases (citation needed). This could not be reproduced on a T440p and T495.
 
-```c
-sudo dnf install tlp
+```sh
+dnf install tlp
 ```
 
 The defaults of TLP can be kept as is for Thinkpad notebooks. 
@@ -94,8 +94,8 @@ Set/add parameters to /etc/dnf/dnf.conf
 
 ### Remove old kernels
 
-```c
-sudo dnf remove $(dnf repoquery --installonly --latest-limit=-1 -q)
+```sh
+dnf remove $(dnf repoquery --installonly --latest-limit=-1 -q)
 ```
 
 ## Bluetooth
@@ -106,8 +106,9 @@ pulseaudio-bluetooth does not support the proprietary LE feature of Apple AirPod
 
 Limit the ControllerMode of your bluetooth module to bredr. Uncomment ControllerMode and set to bredr.
 
-```c
+```sh
 /etc/bluetooth/main.conf
+------------------------
 ControllerMode = bredr
 ```
 
@@ -117,7 +118,7 @@ Restart bluetooth service or reboot afterwards.
 
 Requirement: RPMfusion enabled.
 
-```c
+```sh
 dnf install pulseaudio-module-bluetooth-freeworld
 ```
 
@@ -127,30 +128,33 @@ Restart pulseaudio or reboot afterwards.
 
 If you're experiencing cutoffs or unexpected lose of connection configure TLP to skip suspend management for Bluetooth devices.
 
-```c
+```sh
 /etc/default/tlp
+----------------
 USB_BLACKLIST_BTUSB=1
 ```
 
 ### Notebooks using single module for Bluetooth and 802.11b wifi
 
-If you're facing cutoffs of the bluetooth connection while using wifi try:
+If you're experiencing cutoffs of the bluetooth connection while using wifi try:
 
-```c
+```sh
 /etc/modprobe.d/iwlwifi.conf
+----------------------------
 options iwlwifi bt_coex_active=0
 ```
 
 Modprobe or reboot afterwards.
 
-The coexistence feature will be disabled and the wifi performance severly limited (tested on T495). If this setting solves the bluetooth cutoffs consider switching to 5Ghz wifi.
+The coexistence feature will be disabled and the wifi performance severly limited (tested on T495). If this setting solves the bluetooth cutoffs consider switching to 5Ghz wifi. Do not forget to undo the modification.
 
 ## Graphics
 
 ### Nvidia - Render gnome-shell above 60Hz
 
-```c
+```sh
 /etc/environment
+----------------
 __GL_SYNC_DISPLAY_DEVICE=DP-x
 ```
 
@@ -162,7 +166,7 @@ The setting will only apply after starting nvidia-settings. Consider adding it t
 
 ### Exfat support
 
-```c
+```sh
 dnf install fuse-exfat
 ```
 

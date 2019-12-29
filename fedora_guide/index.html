@@ -336,7 +336,7 @@ pre[data-line] .line-highlight[data-end]:after {
 <h2 class="mume-header" id="tlp">TLP</h2>
 
 <p>Fedora does not come with TLP pre-installed. Fedora claims that the onboard power-tools make TLP obsolete for most use cases (citation needed). This could not be reproduced on a T440p and T495.</p>
-<pre data-role="codeBlock" data-info="c" class="language-c">sudo dnf install tlp
+<pre data-role="codeBlock" data-info="sh" class="language-bash">dnf <span class="token function">install</span> tlp
 </pre><p>The defaults of TLP can be kept as is for Thinkpad notebooks.<br>
 Exception see <a href="#tlp-vs-bluetooth">TLP vs. Bluetooth</a>.</p>
 <h1 class="mume-header" id="tips-and-tricks">Tips and tricks</h1>
@@ -380,46 +380,50 @@ Exception see <a href="#tlp-vs-bluetooth">TLP vs. Bluetooth</a>.</p>
 </table>
 <h3 class="mume-header" id="remove-old-kernels">Remove old kernels</h3>
 
-<pre data-role="codeBlock" data-info="c" class="language-c">sudo dnf remove $<span class="token punctuation">(</span>dnf repoquery <span class="token operator">--</span>installonly <span class="token operator">--</span>latest<span class="token operator">-</span>limit<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span> <span class="token operator">-</span>q<span class="token punctuation">)</span>
+<pre data-role="codeBlock" data-info="sh" class="language-bash">dnf remove <span class="token variable"><span class="token variable">$(</span>dnf repoquery --installonly --latest-limit<span class="token operator">=</span>-1 -q<span class="token variable">)</span></span>
 </pre><h2 class="mume-header" id="bluetooth">Bluetooth</h2>
 
 <h3 class="mume-header" id="airpods">AirPods</h3>
 
 <p>pulseaudio-bluetooth does not support the proprietary LE feature of Apple AirPods. The feature has to be disabled to allow pairing and successful usage.</p>
 <p>Limit the ControllerMode of your bluetooth module to bredr. Uncomment ControllerMode and set to bredr.</p>
-<pre data-role="codeBlock" data-info="c" class="language-c"><span class="token operator">/</span>etc<span class="token operator">/</span>bluetooth<span class="token operator">/</span>main<span class="token punctuation">.</span>conf
+<pre data-role="codeBlock" data-info="sh" class="language-bash">/etc/bluetooth/main.conf
+------------------------
 ControllerMode <span class="token operator">=</span> bredr
 </pre><p>Restart bluetooth service or reboot afterwards.</p>
 <h3 class="mume-header" id="sony-ldac-aptx-aptx-hd-aac-support">Sony LDAC, aptX, aptX HD, AAC support</h3>
 
 <p>Requirement: RPMfusion enabled.</p>
-<pre data-role="codeBlock" data-info="c" class="language-c">dnf install pulseaudio<span class="token operator">-</span>module<span class="token operator">-</span>bluetooth<span class="token operator">-</span>freeworld
+<pre data-role="codeBlock" data-info="sh" class="language-bash">dnf <span class="token function">install</span> pulseaudio-module-bluetooth-freeworld
 </pre><p>Restart pulseaudio or reboot afterwards.</p>
 <h3 class="mume-header" id="tlp-vs-bluetooth">TLP vs. Bluetooth</h3>
 
 <p>If you&apos;re experiencing cutoffs or unexpected lose of connection configure TLP to skip suspend management for Bluetooth devices.</p>
-<pre data-role="codeBlock" data-info="c" class="language-c"><span class="token operator">/</span>etc<span class="token operator">/</span><span class="token keyword">default</span><span class="token operator">/</span>tlp
-USB_BLACKLIST_BTUSB<span class="token operator">=</span><span class="token number">1</span>
+<pre data-role="codeBlock" data-info="sh" class="language-bash">/etc/default/tlp
+----------------
+USB_BLACKLIST_BTUSB<span class="token operator">=</span>1
 </pre><h3 class="mume-header" id="notebooks-using-single-module-for-bluetooth-and-80211b-wifi">Notebooks using single module for Bluetooth and 802.11b wifi</h3>
 
-<p>If you&apos;re facing cutoffs of the bluetooth connection while using wifi try:</p>
-<pre data-role="codeBlock" data-info="c" class="language-c"><span class="token operator">/</span>etc<span class="token operator">/</span>modprobe<span class="token punctuation">.</span>d<span class="token operator">/</span>iwlwifi<span class="token punctuation">.</span>conf
-options iwlwifi bt_coex_active<span class="token operator">=</span><span class="token number">0</span>
+<p>If you&apos;re experiencing cutoffs of the bluetooth connection while using wifi try:</p>
+<pre data-role="codeBlock" data-info="sh" class="language-bash">/etc/modprobe.d/iwlwifi.conf
+----------------------------
+options iwlwifi bt_coex_active<span class="token operator">=</span>0
 </pre><p>Modprobe or reboot afterwards.</p>
-<p>The coexistence feature will be disabled and the wifi performance severly limited (tested on T495). If this setting solves the bluetooth cutoffs consider switching to 5Ghz wifi.</p>
+<p>The coexistence feature will be disabled and the wifi performance severly limited (tested on T495). If this setting solves the bluetooth cutoffs consider switching to 5Ghz wifi. Do not forget to undo the modification.</p>
 <h2 class="mume-header" id="graphics">Graphics</h2>
 
 <h3 class="mume-header" id="nvidia-render-gnome-shell-above-60hz">Nvidia - Render gnome-shell above 60Hz</h3>
 
-<pre data-role="codeBlock" data-info="c" class="language-c"><span class="token operator">/</span>etc<span class="token operator">/</span>environment
-__GL_SYNC_DISPLAY_DEVICE<span class="token operator">=</span>DP<span class="token operator">-</span>x
+<pre data-role="codeBlock" data-info="sh" class="language-bash">/etc/environment
+----------------
+__GL_SYNC_DISPLAY_DEVICE<span class="token operator">=</span>DP-x
 </pre><p>Replace DP-x with your Display device.</p>
 <p>The setting will only apply after starting nvidia-settings. Consider adding it to startup applications.</p>
 <h2 class="mume-header" id="filesystems">Filesystems</h2>
 
 <h3 class="mume-header" id="exfat-support">Exfat support</h3>
 
-<pre data-role="codeBlock" data-info="c" class="language-c">dnf install fuse<span class="token operator">-</span>exfat
+<pre data-role="codeBlock" data-info="sh" class="language-bash">dnf <span class="token function">install</span> fuse-exfat
 </pre><h2 class="mume-header" id="font-configuration">Font configuration</h2>
 
 <h3 class="mume-header" id="todo">Todo</h3>
