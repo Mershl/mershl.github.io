@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head>
-      <title>Fedora31-NewInstallation</title>
+      <title>Fedora-installation&amp;tips</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -272,6 +272,7 @@ pre[data-line] .line-highlight[data-end]:after {
 <ul>
 <li><a href="#install-rpmfusion">Install RPMfusion</a></li>
 <li><a href="#install-flathub-flatpak-support-for-gnome-software">Install Flathub (Flatpak support for Gnome Software)</a></li>
+<li><a href="#tlp">TLP</a></li>
 </ul>
 </li>
 <li><a href="#tips-and-tricks">Tips and tricks</a>
@@ -287,6 +288,7 @@ pre[data-line] .line-highlight[data-end]:after {
 <li><a href="#bluetooth">Bluetooth</a>
 <ul>
 <li><a href="#airpods">AirPods</a></li>
+<li><a href="#sony-ldac-aptx-aptx-hd-aac-support">Sony LDAC, aptX, aptX HD, AAC support</a></li>
 <li><a href="#tlp-vs-bluetooth">TLP vs. Bluetooth</a></li>
 <li><a href="#notebooks-using-single-module-for-bluetooth-and-80211b-wifi">Notebooks using single module for Bluetooth and 802.11b wifi</a></li>
 </ul>
@@ -294,6 +296,16 @@ pre[data-line] .line-highlight[data-end]:after {
 <li><a href="#graphics">Graphics</a>
 <ul>
 <li><a href="#nvidia-render-gnome-shell-above-60hz">Nvidia - Render gnome-shell above 60Hz</a></li>
+</ul>
+</li>
+<li><a href="#filesystems">Filesystems</a>
+<ul>
+<li><a href="#exfat-support">Exfat support</a></li>
+</ul>
+</li>
+<li><a href="#font-configuration">Font configuration</a>
+<ul>
+<li><a href="#todo">Todo</a></li>
 </ul>
 </li>
 <li><a href="#cmake">CMake</a>
@@ -321,6 +333,12 @@ pre[data-line] .line-highlight[data-end]:after {
 <p><a href="https://flatpak.org/setup/Fedora/">https://flatpak.org/setup/Fedora/</a></p>
 <p>Install via Gnome Software.</p>
 <p>Perform flatpak update and refresh Gnome Software afterwards.</p>
+<h2 class="mume-header" id="tlp">TLP</h2>
+
+<p>Fedora does not come with TLP pre-installed. Fedora claims that the onboard power-tools make TLP obsolete for most use cases (citation needed). This could not be reproduced on a T440p and T495.</p>
+<pre data-role="codeBlock" data-info="c" class="language-c">sudo dnf install tlp
+</pre><p>The defaults of TLP can be kept as is for Thinkpad notebooks.<br>
+Exception see <a href="#tlp-vs-bluetooth">TLP vs. Bluetooth</a>.</p>
 <h1 class="mume-header" id="tips-and-tricks">Tips and tricks</h1>
 
 <h2 class="mume-header" id="dnf-package-manager">dnf package manager</h2>
@@ -372,6 +390,11 @@ pre[data-line] .line-highlight[data-end]:after {
 <pre data-role="codeBlock" data-info="c" class="language-c"><span class="token operator">/</span>etc<span class="token operator">/</span>bluetooth<span class="token operator">/</span>main<span class="token punctuation">.</span>conf
 ControllerMode <span class="token operator">=</span> bredr
 </pre><p>Restart bluetooth service or reboot afterwards.</p>
+<h3 class="mume-header" id="sony-ldac-aptx-aptx-hd-aac-support">Sony LDAC, aptX, aptX HD, AAC support</h3>
+
+<p>Requirement: RPMfusion enabled.</p>
+<pre data-role="codeBlock" data-info="c" class="language-c">dnf install pulseaudio<span class="token operator">-</span>module<span class="token operator">-</span>bluetooth<span class="token operator">-</span>freeworld
+</pre><p>Restart pulseaudio or reboot afterwards.</p>
 <h3 class="mume-header" id="tlp-vs-bluetooth">TLP vs. Bluetooth</h3>
 
 <p>If you&apos;re experiencing cutoffs or unexpected lose of connection configure TLP to skip suspend management for Bluetooth devices.</p>
@@ -392,6 +415,15 @@ options iwlwifi bt_coex_active<span class="token operator">=</span><span class="
 __GL_SYNC_DISPLAY_DEVICE<span class="token operator">=</span>DP<span class="token operator">-</span>x
 </pre><p>Replace DP-x with your Display device.</p>
 <p>The setting will only apply after starting nvidia-settings. Consider adding it to startup applications.</p>
+<h2 class="mume-header" id="filesystems">Filesystems</h2>
+
+<h3 class="mume-header" id="exfat-support">Exfat support</h3>
+
+<pre data-role="codeBlock" data-info="c" class="language-c">dnf install fuse<span class="token operator">-</span>exfat
+</pre><h2 class="mume-header" id="font-configuration">Font configuration</h2>
+
+<h3 class="mume-header" id="todo">Todo</h3>
+
 <h2 class="mume-header" id="cmake">CMake</h2>
 
 <h3 class="mume-header" id="most-used-libraries">Most used libraries</h3>

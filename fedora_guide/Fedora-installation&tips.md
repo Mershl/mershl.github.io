@@ -10,6 +10,7 @@
 - [Installation](#installation)
   - [Install RPMfusion](#install-rpmfusion)
   - [Install Flathub (Flatpak support for Gnome Software)](#install-flathub-flatpak-support-for-gnome-software)
+  - [TLP](#tlp)
 - [Tips and tricks](#tips-and-tricks)
   - [dnf package manager](#dnf-package-manager)
     - [History](#history)
@@ -18,10 +19,15 @@
     - [Remove old kernels](#remove-old-kernels)
   - [Bluetooth](#bluetooth)
     - [AirPods](#airpods)
+    - [Sony LDAC, aptX, aptX HD, AAC support](#sony-ldac-aptx-aptx-hd-aac-support)
     - [TLP vs. Bluetooth](#tlp-vs-bluetooth)
     - [Notebooks using single module for Bluetooth and 802.11b wifi](#notebooks-using-single-module-for-bluetooth-and-80211b-wifi)
   - [Graphics](#graphics)
     - [Nvidia - Render gnome-shell above 60Hz](#nvidia-render-gnome-shell-above-60hz)
+  - [Filesystems](#filesystems)
+    - [Exfat support](#exfat-support)
+  - [Font configuration](#font-configuration)
+    - [Todo](#todo)
   - [CMake](#cmake)
     - [Most used libraries](#most-used-libraries)
 
@@ -52,6 +58,17 @@ https://flatpak.org/setup/Fedora/
 Install via Gnome Software.
 
 Perform flatpak update and refresh Gnome Software afterwards.
+
+## TLP
+
+Fedora does not come with TLP pre-installed. Fedora claims that the onboard power-tools make TLP obsolete for most use cases (citation needed). This could not be reproduced on a T440p and T495.
+
+```c
+sudo dnf install tlp
+```
+
+The defaults of TLP can be kept as is for Thinkpad notebooks. 
+Exception see [TLP vs. Bluetooth](#tlp-vs-bluetooth).
 
 # Tips and tricks
 
@@ -96,6 +113,16 @@ ControllerMode = bredr
 
 Restart bluetooth service or reboot afterwards.
 
+### Sony LDAC, aptX, aptX HD, AAC support
+
+Requirement: RPMfusion enabled.
+
+```c
+dnf install pulseaudio-module-bluetooth-freeworld
+```
+
+Restart pulseaudio or reboot afterwards.
+
 ### TLP vs. Bluetooth
 
 If you're experiencing cutoffs or unexpected lose of connection configure TLP to skip suspend management for Bluetooth devices.
@@ -130,6 +157,18 @@ __GL_SYNC_DISPLAY_DEVICE=DP-x
 Replace DP-x with your Display device.
 
 The setting will only apply after starting nvidia-settings. Consider adding it to startup applications.
+
+## Filesystems
+
+### Exfat support
+
+```c
+dnf install fuse-exfat
+```
+
+## Font configuration
+
+### Todo
 
 ## CMake
 
