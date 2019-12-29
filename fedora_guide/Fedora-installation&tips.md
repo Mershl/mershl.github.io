@@ -25,6 +25,7 @@
   - [Graphics](#graphics)
     - [Nvidia - Render gnome-shell above 60Hz](#nvidia-render-gnome-shell-above-60hz)
   - [Filesystems](#filesystems)
+    - [Nautilus: Thumbnails for video files](#nautilus-thumbnails-for-video-files)
     - [Exfat support](#exfat-support)
   - [Font configuration](#font-configuration)
     - [Todo](#todo)
@@ -116,7 +117,7 @@ Restart bluetooth service or reboot afterwards.
 
 ### Sony LDAC, aptX, aptX HD, AAC support
 
-Requirement: RPMfusion enabled.
+Requirement: RPMFusion enabled.
 
 ```sh
 dnf install pulseaudio-module-bluetooth-freeworld
@@ -163,6 +164,16 @@ Replace DP-x with your Display device.
 The setting will only apply after starting nvidia-settings. Consider adding it to startup applications.
 
 ## Filesystems
+
+### Nautilus: Thumbnails for video files
+
+Requirement: RPMFusion enabled.
+
+```sh
+dnf install gstreamer1-libav
+rm -rf ~/.cache/thumbnails/fail
+nautilus -q
+```
 
 ### Exfat support
 
