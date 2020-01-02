@@ -285,6 +285,13 @@ pre[data-line] .line-highlight[data-end]:after {
 <li><a href="#remove-old-kernels">Remove old kernels</a></li>
 </ul>
 </li>
+<li><a href="#multimedia">Multimedia</a>
+<ul>
+<li><a href="#minimal-configuration">Minimal configuration</a></li>
+<li><a href="#complete-configuration">Complete configuration</a></li>
+<li><a href="#nautilus-thumbnails-for-video-files">Nautilus: Thumbnails for video files</a></li>
+</ul>
+</li>
 <li><a href="#bluetooth">Bluetooth</a>
 <ul>
 <li><a href="#airpods">AirPods</a></li>
@@ -300,7 +307,6 @@ pre[data-line] .line-highlight[data-end]:after {
 </li>
 <li><a href="#filesystems">Filesystems</a>
 <ul>
-<li><a href="#nautilus-thumbnails-for-video-files">Nautilus: Thumbnails for video files</a></li>
 <li><a href="#exfat-support">Exfat support</a></li>
 </ul>
 </li>
@@ -382,6 +388,22 @@ Exception see <a href="#tlp-vs-bluetooth">TLP vs. Bluetooth</a>.</p>
 <h3 class="mume-header" id="remove-old-kernels">Remove old kernels</h3>
 
 <pre data-role="codeBlock" data-info="sh" class="language-bash">dnf remove <span class="token variable"><span class="token variable">$(</span>dnf repoquery --installonly --latest-limit<span class="token operator">=</span>-1 -q<span class="token variable">)</span></span>
+</pre><h2 class="mume-header" id="multimedia">Multimedia</h2>
+
+<h3 class="mume-header" id="minimal-configuration">Minimal configuration</h3>
+
+<p>Requirement: RPMFusion enabled.</p>
+<pre data-role="codeBlock" data-info="sh" class="language-bash">dnf <span class="token function">install</span> ffmpeg-libs
+</pre><h3 class="mume-header" id="complete-configuration">Complete configuration</h3>
+
+<p>Requirement: RPMFusion enabled.</p>
+<pre data-role="codeBlock" data-info="sh" class="language-bash">dnf groupupdate Multimedia
+</pre><h3 class="mume-header" id="nautilus-thumbnails-for-video-files">Nautilus: Thumbnails for video files</h3>
+
+<p>Requirement: RPMFusion enabled.</p>
+<pre data-role="codeBlock" data-info="sh" class="language-bash">dnf <span class="token function">install</span> gstreamer1-libav
+<span class="token function">rm</span> -rf ~/.cache/thumbnails/fail
+nautilus -q
 </pre><h2 class="mume-header" id="bluetooth">Bluetooth</h2>
 
 <h3 class="mume-header" id="airpods">AirPods</h3>
@@ -422,13 +444,7 @@ __GL_SYNC_DISPLAY_DEVICE<span class="token operator">=</span>DP-x
 <p>The setting will only apply after starting nvidia-settings. Consider adding it to startup applications.</p>
 <h2 class="mume-header" id="filesystems">Filesystems</h2>
 
-<h3 class="mume-header" id="nautilus-thumbnails-for-video-files">Nautilus: Thumbnails for video files</h3>
-
-<p>Requirement: RPMFusion enabled.</p>
-<pre data-role="codeBlock" data-info="sh" class="language-bash">dnf <span class="token function">install</span> gstreamer1-libav
-<span class="token function">rm</span> -rf ~/.cache/thumbnails/fail
-nautilus -q
-</pre><h3 class="mume-header" id="exfat-support">Exfat support</h3>
+<h3 class="mume-header" id="exfat-support">Exfat support</h3>
 
 <pre data-role="codeBlock" data-info="sh" class="language-bash">dnf <span class="token function">install</span> fuse-exfat
 </pre><h2 class="mume-header" id="font-configuration">Font configuration</h2>

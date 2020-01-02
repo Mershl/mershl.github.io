@@ -17,6 +17,10 @@
     - [Comparison overview](#comparison-overview)
     - [Pimp my dnf](#pimp-my-dnf)
     - [Remove old kernels](#remove-old-kernels)
+  - [Multimedia](#multimedia)
+    - [Minimal configuration](#minimal-configuration)
+    - [Complete configuration](#complete-configuration)
+    - [Nautilus: Thumbnails for video files](#nautilus-thumbnails-for-video-files)
   - [Bluetooth](#bluetooth)
     - [AirPods](#airpods)
     - [Sony LDAC, aptX, aptX HD, AAC support](#sony-ldac-aptx-aptx-hd-aac-support)
@@ -25,7 +29,6 @@
   - [Graphics](#graphics)
     - [Nvidia - Render gnome-shell above 60Hz](#nvidia-render-gnome-shell-above-60hz)
   - [Filesystems](#filesystems)
-    - [Nautilus: Thumbnails for video files](#nautilus-thumbnails-for-video-files)
     - [Exfat support](#exfat-support)
   - [Font configuration](#font-configuration)
     - [Todo](#todo)
@@ -99,6 +102,34 @@ Set/add parameters to /etc/dnf/dnf.conf
 dnf remove $(dnf repoquery --installonly --latest-limit=-1 -q)
 ```
 
+## Multimedia
+
+### Minimal configuration
+
+Requirement: RPMFusion enabled.
+
+```sh
+dnf install ffmpeg-libs
+```
+
+### Complete configuration
+
+Requirement: RPMFusion enabled.
+
+```sh
+dnf groupupdate Multimedia
+```
+
+### Nautilus: Thumbnails for video files
+
+Requirement: RPMFusion enabled.
+
+```sh
+dnf install gstreamer1-libav
+rm -rf ~/.cache/thumbnails/fail
+nautilus -q
+```
+
 ## Bluetooth
 
 ### AirPods
@@ -164,16 +195,6 @@ Replace DP-x with your Display device.
 The setting will only apply after starting nvidia-settings. Consider adding it to startup applications.
 
 ## Filesystems
-
-### Nautilus: Thumbnails for video files
-
-Requirement: RPMFusion enabled.
-
-```sh
-dnf install gstreamer1-libav
-rm -rf ~/.cache/thumbnails/fail
-nautilus -q
-```
 
 ### Exfat support
 
