@@ -312,7 +312,12 @@ pre[data-line] .line-highlight[data-end]:after {
 </li>
 <li><a href="#font-configuration">Font configuration</a>
 <ul>
-<li><a href="#todo">Todo</a></li>
+<li><a href="#better-font-rendering">Better font rendering</a></li>
+<li><a href="#e-books-epub-mobi">E-Books (epub, mobi, ...)</a>
+<ul>
+<li><a href="#optional-font-recommendation">Optional: Font recommendation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#cmake">CMake</a>
@@ -449,8 +454,29 @@ __GL_SYNC_DISPLAY_DEVICE<span class="token operator">=</span>DP-x
 <pre data-role="codeBlock" data-info="sh" class="language-bash">dnf <span class="token function">install</span> fuse-exfat
 </pre><h2 class="mume-header" id="font-configuration">Font configuration</h2>
 
-<h3 class="mume-header" id="todo">Todo</h3>
+<h3 class="mume-header" id="better-font-rendering">Better font rendering</h3>
 
+<p>TODO</p>
+<h3 class="mume-header" id="e-books-epub-mobi">E-Books (epub, mobi, ...)</h3>
+
+<ul>
+<li>Install foliate</li>
+</ul>
+<pre data-role="codeBlock" data-info="sh" class="language-bash">dnf <span class="token function">install</span> foliate
+</pre><h4 class="mume-header" id="optional-font-recommendation">Optional: Font recommendation</h4>
+
+<ul>
+<li>
+<p>Download Bitter OTF font from <strong><a href="https://www.huertatipografica.com/en/fonts/bitter-ht">Bitter OTF</a></strong></p>
+</li>
+<li>
+<p>Open &amp; install each .otf seperatly using Gnome Font Viewer</p>
+</li>
+<li>
+<p>Configure foliate to use Bitter. Recommended font size: 18<br>
+<img src="images/foliate_font_config.png" alt="foliate-font-config"></p>
+</li>
+</ul>
 <h2 class="mume-header" id="cmake">CMake</h2>
 
 <h3 class="mume-header" id="most-used-libraries">Most used libraries</h3>

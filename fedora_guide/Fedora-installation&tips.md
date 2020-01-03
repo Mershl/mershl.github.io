@@ -31,7 +31,9 @@
   - [Filesystems](#filesystems)
     - [Exfat support](#exfat-support)
   - [Font configuration](#font-configuration)
-    - [Todo](#todo)
+    - [Better font rendering](#better-font-rendering)
+    - [E-Books (epub, mobi, ...)](#e-books-epub-mobi)
+      - [Optional: Font recommendation](#optional-font-recommendation)
   - [CMake](#cmake)
     - [Most used libraries](#most-used-libraries)
 
@@ -204,7 +206,26 @@ dnf install fuse-exfat
 
 ## Font configuration
 
-### Todo
+### Better font rendering
+
+TODO
+
+### E-Books (epub, mobi, ...)
+
+- Install foliate
+
+```sh
+dnf install foliate
+```
+
+#### Optional: Font recommendation
+
+- Download Bitter OTF font from **[Bitter OTF](https://www.huertatipografica.com/en/fonts/bitter-ht)**
+
+- Open & install each .otf seperatly using Gnome Font Viewer
+
+- Configure foliate to use Bitter. Recommended font size: 18
+![foliate-font-config](images/foliate_font_config.png)
 
 ## CMake
 
