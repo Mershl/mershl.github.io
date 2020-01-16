@@ -11,6 +11,10 @@
   - [Install RPMfusion](#install-rpmfusion)
   - [Install Flathub (Flatpak support for Gnome Software)](#install-flathub-flatpak-support-for-gnome-software)
   - [TLP](#tlp)
+  - [Known issues](#known-issues)
+    - [Unexpected long boot times](#unexpected-long-boot-times)
+      - [1.) Disable plymouth](#1-disable-plymouth)
+      - [2.) Disable NetworkManager waiting for connection](#2-disable-networkmanager-waiting-for-connection)
 - [Tips and tricks](#tips-and-tricks)
   - [dnf package manager](#dnf-package-manager)
     - [History](#history)
@@ -21,6 +25,10 @@
     - [Minimal configuration](#minimal-configuration)
     - [Complete configuration](#complete-configuration)
     - [Nautilus: Thumbnails for video files](#nautilus-thumbnails-for-video-files)
+  - [Modern shell: Fish](#modern-shell-fish)
+    - [Installation](#installation-1)
+    - [Changing your default shell](#changing-your-default-shell)
+    - [Configuration](#configuration)
   - [Bluetooth](#bluetooth)
     - [AirPods](#airpods)
     - [Sony LDAC, aptX, aptX HD, AAC support](#sony-ldac-aptx-aptx-hd-aac-support)
@@ -71,10 +79,57 @@ Fedora does not come with TLP pre-installed. Fedora claims that the onboard powe
 
 ```sh
 dnf install tlp
+systemctl mask systemd-rfkill.socket
+systemctl reboot
 ```
 
-The defaults of TLP can be kept as is for Thinkpad notebooks. 
+The defaults of TLP can be kept as is for most Thinkpad notebooks.
 Exception see [TLP vs. Bluetooth](#tlp-vs-bluetooth).
+
+## Known issues
+
+### Unexpected long boot times
+
+Fedora (confirmed on F31) is affected by a bug in plymouth (the animated boot screen) which extends the boot time by up to 50%. The blocking service `plymouth-quit-wait.service` will wait longer than necessary and keep the graphical target from showing.
+
+Note your boot times before and after applying the proposal using:
+
+```sh
+systemd-analyze time
+
+# Optional:
+systemd-analyze blame
+systemd-analyze plot > boot.svg
+```
+
+#### 1.) Disable plymouth
+
+Add `rd.plymouth=0 plymouth.enable=0` to your boot parameters.
+
+```sh
+/etc/default/grub
+-----------------
+GRUB_CMDLINE_LINUX="[...] rhgb quiet rd.plymouth=0 plymouth.enable=0"
+```
+
+Regenerate your grub configuration.
+
+```sh
+# For EFI systems
+grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+# For BIOS systems
+grub2-mkconfig -o /boot/grub2/grub.cfg
+```
+
+#### 2.) Disable NetworkManager waiting for connection
+
+Check `systemd-analyze blame` for `NetworkManager-wait-online.service`. If it's taking up more than a few seconds consider the following:
+
+The service is intended for applications which rely on a web connection on bootup. Disabling the wait does not affect most desktop users.
+
+```sh
+systemctl disable NetworkManager-wait-online.service
+```
 
 # Tips and tricks
 
@@ -131,6 +186,32 @@ dnf install gstreamer1-libav
 rm -rf ~/.cache/thumbnails/fail
 nautilus -q
 ```
+
+## Modern shell: Fish
+
+### Installation
+
+```sh
+dnf install fish
+```
+
+### Changing your default shell
+
+```sh
+chsh -s /bin/fish
+```
+
+Hint: Most terminal emulators require a complete restart of the terminal emulator for the new default shell to take effect. If in doubt do a reboot.
+
+### Configuration
+
+Fish is configured using an web interface.
+
+```sh
+fish_config
+```
+
+A http server will be started and the default browser should open a page pointing to the configuration website. Remember to hit save on every page to persist your changes.
 
 ## Bluetooth
 

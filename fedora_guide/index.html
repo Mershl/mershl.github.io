@@ -273,6 +273,16 @@ pre[data-line] .line-highlight[data-end]:after {
 <li><a href="#install-rpmfusion">Install RPMfusion</a></li>
 <li><a href="#install-flathub-flatpak-support-for-gnome-software">Install Flathub (Flatpak support for Gnome Software)</a></li>
 <li><a href="#tlp">TLP</a></li>
+<li><a href="#known-issues">Known issues</a>
+<ul>
+<li><a href="#unexpected-long-boot-times">Unexpected long boot times</a>
+<ul>
+<li><a href="#1-disable-plymouth">1.) Disable plymouth</a></li>
+<li><a href="#2-disable-networkmanager-waiting-for-connection">2.) Disable NetworkManager waiting for connection</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#tips-and-tricks">Tips and tricks</a>
@@ -290,6 +300,13 @@ pre[data-line] .line-highlight[data-end]:after {
 <li><a href="#minimal-configuration">Minimal configuration</a></li>
 <li><a href="#complete-configuration">Complete configuration</a></li>
 <li><a href="#nautilus-thumbnails-for-video-files">Nautilus: Thumbnails for video files</a></li>
+</ul>
+</li>
+<li><a href="#modern-shell-fish">Modern shell: Fish</a>
+<ul>
+<li><a href="#installation-1">Installation</a></li>
+<li><a href="#changing-your-default-shell">Changing your default shell</a></li>
+<li><a href="#configuration">Configuration</a></li>
 </ul>
 </li>
 <li><a href="#bluetooth">Bluetooth</a>
@@ -349,9 +366,38 @@ pre[data-line] .line-highlight[data-end]:after {
 
 <p>Fedora does not come with TLP pre-installed. Fedora claims that the onboard power-tools make TLP obsolete for most use cases (citation needed). This could not be reproduced on a T440p and T495.</p>
 <pre data-role="codeBlock" data-info="sh" class="language-bash">dnf <span class="token function">install</span> tlp
-</pre><p>The defaults of TLP can be kept as is for Thinkpad notebooks.<br>
+systemctl mask systemd-rfkill.socket
+systemctl <span class="token function">reboot</span>
+</pre><p>The defaults of TLP can be kept as is for most Thinkpad notebooks.<br>
 Exception see <a href="#tlp-vs-bluetooth">TLP vs. Bluetooth</a>.</p>
-<h1 class="mume-header" id="tips-and-tricks">Tips and tricks</h1>
+<h2 class="mume-header" id="known-issues">Known issues</h2>
+
+<h3 class="mume-header" id="unexpected-long-boot-times">Unexpected long boot times</h3>
+
+<p>Fedora (confirmed on F31) is affected by a bug in plymouth (the animated boot screen) which extends the boot time by up to 50%. The blocking service <code>plymouth-quit-wait.service</code> will wait longer than necessary and keep the graphical target from showing.</p>
+<p>Note your boot times before and after applying the proposal using:</p>
+<pre data-role="codeBlock" data-info="sh" class="language-bash">systemd-analyze <span class="token function">time</span>
+
+<span class="token comment"># Optional:</span>
+systemd-analyze blame
+systemd-analyze plot <span class="token operator">&gt;</span> boot.svg
+</pre><h4 class="mume-header" id="1-disable-plymouth">1.) Disable plymouth</h4>
+
+<p>Add <code>rd.plymouth=0 plymouth.enable=0</code> to your boot parameters.</p>
+<pre data-role="codeBlock" data-info="sh" class="language-bash">/etc/default/grub
+-----------------
+GRUB_CMDLINE_LINUX<span class="token operator">=</span><span class="token string">&quot;[...] rhgb quiet rd.plymouth=0 plymouth.enable=0&quot;</span>
+</pre><p>Regenerate your grub configuration.</p>
+<pre data-role="codeBlock" data-info="sh" class="language-bash"><span class="token comment"># For EFI systems</span>
+grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+<span class="token comment"># For BIOS systems</span>
+grub2-mkconfig -o /boot/grub2/grub.cfg
+</pre><h4 class="mume-header" id="2-disable-networkmanager-waiting-for-connection">2.) Disable NetworkManager waiting for connection</h4>
+
+<p>Check <code>systemd-analyze blame</code> for <code>NetworkManager-wait-online.service</code>. If it&apos;s taking up more than a few seconds consider the following:</p>
+<p>The service is intended for applications which rely on a web connection on bootup. Disabling the wait does not affect most desktop users.</p>
+<pre data-role="codeBlock" data-info="sh" class="language-bash">systemctl disable NetworkManager-wait-online.service
+</pre><h1 class="mume-header" id="tips-and-tricks">Tips and tricks</h1>
 
 <h2 class="mume-header" id="dnf-package-manager">dnf package manager</h2>
 
@@ -409,7 +455,21 @@ Exception see <a href="#tlp-vs-bluetooth">TLP vs. Bluetooth</a>.</p>
 <pre data-role="codeBlock" data-info="sh" class="language-bash">dnf <span class="token function">install</span> gstreamer1-libav
 <span class="token function">rm</span> -rf ~/.cache/thumbnails/fail
 nautilus -q
-</pre><h2 class="mume-header" id="bluetooth">Bluetooth</h2>
+</pre><h2 class="mume-header" id="modern-shell-fish">Modern shell: Fish</h2>
+
+<h3 class="mume-header" id="installation-1">Installation</h3>
+
+<pre data-role="codeBlock" data-info="sh" class="language-bash">dnf <span class="token function">install</span> fish
+</pre><h3 class="mume-header" id="changing-your-default-shell">Changing your default shell</h3>
+
+<pre data-role="codeBlock" data-info="sh" class="language-bash">chsh -s /bin/fish
+</pre><p>Hint: Most terminal emulators require a complete restart of the terminal emulator for the new default shell to take effect. If in doubt do a reboot.</p>
+<h3 class="mume-header" id="configuration">Configuration</h3>
+
+<p>Fish is configured using an web interface.</p>
+<pre data-role="codeBlock" data-info="sh" class="language-bash">fish_config
+</pre><p>A http server will be started and the default browser should open a page pointing to the configuration website. Remember to hit save on every page to persist your changes.</p>
+<h2 class="mume-header" id="bluetooth">Bluetooth</h2>
 
 <h3 class="mume-header" id="airpods">AirPods</h3>
 
